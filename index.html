@@ -75,7 +75,7 @@
     auth: { clientId: CLIENT, authority: "https://login.microsoftonline.com/" + TENANT, redirectUri: location.origin + location.pathname, navigateToLoginRequestUrl: false },
     cache: { cacheLocation: "localStorage" }
   });
-  var SCOPES = ["User.Read"];
+  var SCOPES = ["User.Read", "GroupMember.Read.All"];
 
   var $ = function (id) { return document.getElementById(id); };
   function teade(t) { var e = $("teade"); e.textContent = t; e.style.display = t ? "block" : "none"; }
