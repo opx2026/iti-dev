@@ -143,14 +143,28 @@
     'if(d.id==="poster")v.poster=url;else{v.src=url;var pr=v.play();pr&&pr.catch&&pr.catch(function(){});}});' +
     '})();<\/script>';
 
-  async function laadi(path) {
+  var VAHEMALU = {};   // path -> html (sessiooni ajaks)
+  async function tooLeht(puhas, varske) {
+    var s = sess(); if (!s) throw new Error("sessioon puudub");
+    if (!varske && VAHEMALU[puhas]) return VAHEMALU[puhas];
+    var v = await api({ a: "leht", s: s.s, p: puhas, _: Date.now() });
+    if (!v.ok) { var e = new Error(v.viga || "Lehte ei saanud laadida"); e.kood = v.kood; throw e; }
+    VAHEMALU[puhas] = v.html; return v.html;
+  }
+  var EELLAADITUD = false;
+  function eellaadi() {   // tõmba kursuselehed taustal vahemällu
+    if (EELLAADITUD) return; EELLAADITUD = true;
+    var lehed = ["k1","k2","k3","k4","k5","k6","k7","k8"].map(function (k) { return k + "/index.html"; });
+    (function jargmine(i) { if (i >= lehed.length) return; tooLeht(lehed[i]).catch(function () {}).then(function () { setTimeout(function () { jargmine(i + 1); }, 150); }); })(0);
+  }
+  async function laadi(path, varske) {
     var s = sess(); if (!s) { sulgeSessioon(); return; }
     var puhas = path.split("#")[0] || "index.html"; var ankur = path.indexOf("#") >= 0 ? path.slice(path.indexOf("#")) : "";
     $("laadin").style.display = "block"; $("tee").textContent = puhas;
     try {
-      var v = await api({ a: "leht", s: s.s, p: puhas, _: Date.now() });
-      if (!v.ok) { if (v.kood === 401) { sulgeSessioon(v.viga); return; } throw new Error(v.viga || "Lehte ei saanud laadida"); }
+      var html0 = await tooLeht(puhas, varske);
       praegune = puhas;
+      var v = { html: html0 };
       var html = v.html.replace(/<\/body>/i, SUSTI + "</body>");
       if (!/<\/body>/i.test(html)) html += SUSTI;
       var r = $("raam");
@@ -159,7 +173,8 @@
       r.dataset.blob = blob;
       r.src = blob + (ankur || "");
       history.replaceState(null, "", "#/" + puhas + ankur);
-    } catch (e) { alert(e.message); }
+      if (puhas === "index.html") setTimeout(eellaadi, 500);
+    } catch (e) { if (e.kood === 401) { sulgeSessioon(e.message); return; } alert(e.message); }
     $("laadin").style.display = "none";
   }
 
@@ -177,7 +192,7 @@
 
   $("logi").onclick = logiSisse;
   $("valja").onclick = logiValja;
-  $("uuenda").onclick = function () { laadi(praegune); };
+  $("uuenda").onclick = function () { VAHEMALU = {}; EELLAADITUD = false; laadi(praegune, true); };
 
   // ---- käivitus ----
   msal.handleRedirectPromise().then(function (res) {
