@@ -125,7 +125,7 @@
   function naitaVaatur() {
     $("uks").style.display = "none"; $("vaatur").style.display = "flex";
     var s = sess(); $("kes").textContent = s && s.kes ? s.kes : "";
-    var h = location.hash.replace(/^#\/?/, "");
+    var h = location.hash.indexOf("#/") === 0 ? location.hash.slice(2) : "";
     laadi(h || "index.html");
   }
   function sulgeSessioon(miks) { localStorage.removeItem(SESS_KEY); $("vaatur").style.display = "none"; $("uks").style.display = "flex"; teade(miks || "Sessioon aegus – logi uuesti sisse."); }
@@ -154,8 +154,10 @@
       var html = v.html.replace(/<\/body>/i, SUSTI + "</body>");
       if (!/<\/body>/i.test(html)) html += SUSTI;
       var r = $("raam");
-      r.onload = function () { if (ankur) { try { r.contentWindow.location.hash = ankur; } catch (e) {} } r.onload = null; };
-      r.srcdoc = html;
+      if (r.dataset.blob) { try { URL.revokeObjectURL(r.dataset.blob); } catch (e) {} }
+      var blob = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      r.dataset.blob = blob;
+      r.src = blob + (ankur || "");
       history.replaceState(null, "", "#/" + puhas + ankur);
     } catch (e) { alert(e.message); }
     $("laadin").style.display = "none";
@@ -171,7 +173,7 @@
       } catch (err) {}
     }
   });
-  addEventListener("hashchange", function () { var h = location.hash.replace(/^#\/?/, ""); if (h && h !== praegune && sess()) laadi(h); });
+  addEventListener("hashchange", function () { if (location.hash.indexOf("#/") !== 0) return; var h = location.hash.slice(2); if (h && h.split("#")[0] !== praegune && sess()) laadi(h); });
 
   $("logi").onclick = logiSisse;
   $("valja").onclick = logiValja;
