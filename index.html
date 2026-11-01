@@ -1,3 +1,189 @@
 <!DOCTYPE html>
-<html lang="et"><head><meta charset="utf-8"><title>ITI arendus</title></head>
-<body><p>ITI arendusvaaturi sisselogimise leht – tuleb siia.</p><p>Push-kontroll 1.11.2026 11:32 – kui näed seda rida, töötab push ja Pages.</p></body></html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ITI · arendusversioon</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{--primaar:#0B1057;--aktsent:#2765E0;--taust:#FAFCFD;--joon:#BACDDB;--tekst:#0B1057;--hall:#5b6478}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--taust);color:var(--tekst);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+  #uks{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;
+       background:radial-gradient(1200px 600px at 20% -10%,#1b2a8a 0%,var(--primaar) 45%,#070a3a 100%)}
+  .kast{width:min(460px,100%);background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .mark{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.06em;color:var(--primaar);font-size:22px}
+  .mark svg{width:26px;height:26px;color:var(--aktsent)}
+  h1{font-size:20px;margin:18px 0 6px}
+  p{margin:0 0 14px;color:var(--hall)}
+  .nupp{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:10px;padding:12px 18px;font-weight:600;font-size:15px;cursor:pointer;
+        background:var(--primaar);color:#fff}
+  .nupp:hover{filter:brightness(1.15)}
+  .nupp svg{width:18px;height:18px}
+  .teade{margin-top:14px;padding:10px 12px;border-radius:8px;background:#fff3f3;color:#8a1c1c;font-size:14px;display:none}
+  .mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--hall)}
+  #vaatur{display:none;height:100%;flex-direction:column}
+  #riba{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--primaar);color:#fff;font-size:13px}
+  #riba .mark{color:#fff;font-size:15px}
+  #riba .mark svg{color:#96A0F2}
+  #riba .tee{flex:1;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #riba button{border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer}
+  #riba button:hover{background:rgba(255,255,255,.12)}
+  #raam{flex:1;width:100%;border:0;background:#fff}
+  #laadin{position:fixed;left:0;right:0;top:34px;height:3px;background:linear-gradient(90deg,#96A0F2,#2765E0);display:none;animation:p 1s linear infinite}
+  @keyframes p{from{opacity:.4}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div id="uks">
+  <div class="kast">
+    <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>ITI</div>
+    <h1>Suunamooduli arendusversioon</h1>
+    <p>Siin on kursuselehtede tööversioon, mis ei ole veel avalik. Sisenemiseks logi sisse Saaremaa Gümnaasiumi Microsofti kontoga.</p>
+    <button class="nupp" id="logi" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 3h9v9H2zM13 3h9v9h-9zM2 14h9v9H2zM13 14h9v9h-9z" opacity=".9"/></svg>
+      Logi sisse kooli kontoga
+    </button>
+    <div class="teade" id="teade"></div>
+    <p class="mono" style="margin-top:22px">Avalik leht: <a href="https://saaremaa.edu.ee/iti/" target="_blank" rel="noopener">saaremaa.edu.ee/iti</a></p>
+  </div>
+</div>
+
+<div id="vaatur">
+  <div id="riba">
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>ITI · arendus</span>
+    <span class="tee" id="tee"></span>
+    <span id="kes"></span>
+    <button type="button" id="uuenda" title="Laadi leht uuesti GitHubist">Uuenda</button>
+    <button type="button" id="valja">Logi välja</button>
+  </div>
+  <div id="laadin"></div>
+  <iframe id="raam" title="Kursuseleht"></iframe>
+</div>
+
+<script src="https://alcdn.msauth.net/browser/2.38.1/js/msal-browser.min.js"></script>
+<script>
+(function () {
+  // ---- seaded ----
+  var TENANT = "df3b3606-d59f-4297-88f1-f5e4bf7c1532";
+  var CLIENT = "a2c49306-22a2-4de1-98a5-28815814873d";
+  var API    = "https://script.google.com/macros/s/AKfycbzhmSprhntt61Rv8SVq8hdwrt5cnopvA1ssrZAIumYp2Dqk_UEhrbsq25dlbh6MmzeI/exec";
+  var SESS_KEY = "iti_dev_sess";
+
+  var msal = new window.msal.PublicClientApplication({
+    auth: { clientId: CLIENT, authority: "https://login.microsoftonline.com/" + TENANT, redirectUri: location.origin + location.pathname, navigateToLoginRequestUrl: false },
+    cache: { cacheLocation: "localStorage" }
+  });
+  var SCOPES = ["User.Read"];
+
+  var $ = function (id) { return document.getElementById(id); };
+  function teade(t) { var e = $("teade"); e.textContent = t; e.style.display = t ? "block" : "none"; }
+  function sess() { try { var s = JSON.parse(localStorage.getItem(SESS_KEY) || "null"); if (s && s.exp > Date.now()) return s; } catch (e) {} return null; }
+  function salvesta(s) { localStorage.setItem(SESS_KEY, JSON.stringify(s)); }
+
+  // ---- API ----
+  function api(params, body) {
+    var u = API + "?" + new URLSearchParams(params).toString();
+    var o = body ? { method: "POST", body: JSON.stringify(body), headers: { "Content-Type": "text/plain;charset=utf-8" } } : { method: "GET" };
+    o.redirect = "follow";
+    return fetch(u, o).then(function (r) { return r.text(); }).then(function (t) {
+      try { return JSON.parse(t); } catch (e) { throw new Error("Vaatur vastas ootamatult: " + t.slice(0, 120)); }
+    });
+  }
+
+  // ---- sisselogimine ----
+  async function logiSisse() {
+    teade("");
+    var acc = msal.getAllAccounts()[0];
+    var tok;
+    try {
+      if (!acc) { await msal.loginRedirect({ scopes: SCOPES, prompt: "select_account" }); return; }
+      tok = (await msal.acquireTokenSilent({ scopes: SCOPES, account: acc })).accessToken;
+    } catch (e) {
+      await msal.acquireTokenRedirect({ scopes: SCOPES, account: acc }); return;
+    }
+    var v = await api({ a: "login" }, { t: tok });
+    if (!v.ok) { teade(v.viga || "Sisselogimine ebaõnnestus."); return; }
+    salvesta({ s: v.s, exp: v.exp, kes: v.kes });
+    naitaVaatur();
+  }
+
+  async function logiValja() {
+    localStorage.removeItem(SESS_KEY);
+    var acc = msal.getAllAccounts()[0];
+    try { await msal.logoutRedirect({ account: acc, onRedirectNavigate: function () { return false; } }); } catch (e) {}
+    Object.keys(localStorage).filter(function (k) { return k.indexOf("msal.") === 0; }).forEach(function (k) { localStorage.removeItem(k); });
+    location.hash = ""; location.reload();
+  }
+
+  // ---- vaatur ----
+  var praegune = "index.html";
+  function teePath(h) { // suhteline link praeguse lehe suhtes
+    try { var u = new URL(h, "https://x/" + praegune); return u.pathname.replace(/^\/+/, "") + (u.hash || ""); } catch (e) { return h; }
+  }
+  function naitaVaatur() {
+    $("uks").style.display = "none"; $("vaatur").style.display = "flex";
+    var s = sess(); $("kes").textContent = s && s.kes ? s.kes : "";
+    var h = location.hash.replace(/^#\/?/, "");
+    laadi(h || "index.html");
+  }
+  function sulgeSessioon(miks) { localStorage.removeItem(SESS_KEY); $("vaatur").style.display = "none"; $("uks").style.display = "flex"; teade(miks || "Sessioon aegus – logi uuesti sisse."); }
+
+  var SUSTI = '<script>(function(){' +
+    'document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");' +
+    'if(!h||h.charAt(0)==="#"||/^(https?:|mailto:|tel:)/i.test(h)||a.target==="_blank")return;e.preventDefault();e.stopImmediatePropagation();parent.postMessage({iti:"nav",href:h},"*");},true);' +
+    'document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-video]");if(!b)return;e.preventDefault();e.stopImmediatePropagation();' +
+    'var v=document.getElementById("videoMangija"),m=document.getElementById("videoModaal");if(!v||!m)return;var k=m.querySelector(".vm-kast");' +
+    'var p=matchMedia("(max-width:640px) and (orientation:portrait)").matches;k&&k.classList.toggle("pyst",p);m.hidden=false;document.body.style.overflow="hidden";' +
+    'var src=p?v.dataset.srcPyst:v.dataset.srcLai,pos=p?v.dataset.posterPyst:v.dataset.posterLai;' +
+    'parent.postMessage({iti:"fail",path:pos,id:"poster"},"*");parent.postMessage({iti:"fail",path:src,id:"video"},"*");},true);' +
+    'addEventListener("message",function(e){var d=e.data||{};if(d.iti!=="failOk")return;var v=document.getElementById("videoMangija");if(!v)return;' +
+    'var b=atob(d.b64),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:d.mime}));' +
+    'if(d.id==="poster")v.poster=url;else{v.src=url;var pr=v.play();pr&&pr.catch&&pr.catch(function(){});}});' +
+    '})();<\/script>';
+
+  async function laadi(path) {
+    var s = sess(); if (!s) { sulgeSessioon(); return; }
+    var puhas = path.split("#")[0] || "index.html"; var ankur = path.indexOf("#") >= 0 ? path.slice(path.indexOf("#")) : "";
+    $("laadin").style.display = "block"; $("tee").textContent = puhas;
+    try {
+      var v = await api({ a: "leht", s: s.s, p: puhas, _: Date.now() });
+      if (!v.ok) { if (v.kood === 401) { sulgeSessioon(v.viga); return; } throw new Error(v.viga || "Lehte ei saanud laadida"); }
+      praegune = puhas;
+      var html = v.html.replace(/<\/body>/i, SUSTI + "</body>");
+      if (!/<\/body>/i.test(html)) html += SUSTI;
+      var r = $("raam");
+      r.onload = function () { if (ankur) { try { r.contentWindow.location.hash = ankur; } catch (e) {} } r.onload = null; };
+      r.srcdoc = html;
+      history.replaceState(null, "", "#/" + puhas + ankur);
+    } catch (e) { alert(e.message); }
+    $("laadin").style.display = "none";
+  }
+
+  addEventListener("message", async function (e) {
+    var d = e.data || {}; var s = sess();
+    if (d.iti === "nav") { laadi(teePath(d.href)); }
+    if (d.iti === "fail" && s) {
+      try {
+        var v = await api({ a: "fail", s: s.s, p: teePath(d.path) });
+        if (v.ok) $("raam").contentWindow.postMessage({ iti: "failOk", id: d.id, b64: v.b64, mime: v.mime }, "*");
+      } catch (err) {}
+    }
+  });
+  addEventListener("hashchange", function () { var h = location.hash.replace(/^#\/?/, ""); if (h && h !== praegune && sess()) laadi(h); });
+
+  $("logi").onclick = logiSisse;
+  $("valja").onclick = logiValja;
+  $("uuenda").onclick = function () { laadi(praegune); };
+
+  // ---- käivitus ----
+  msal.handleRedirectPromise().then(function (res) {
+    if (res && res.account) msal.setActiveAccount(res.account);
+    if (sess()) { naitaVaatur(); return; }
+    if (res && res.account) logiSisse();           // tulime Microsoftist tagasi -> vaheta tõend sessiooniks
+  }).catch(function (e) { teade("Microsofti sisselogimine ebaõnnestus: " + (e.errorMessage || e.message)); });
+})();
+</script>
+</body>
+</html>
